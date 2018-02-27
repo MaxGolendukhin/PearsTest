@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="options_text_size">10sp</dimen>
+    <dimen name="button_width">100dp</dimen>
+    <dimen name="margin_regular">16dp</dimen>
+    <dimen name="margin_bottom">16dp</dimen>
+    <dimen name="margin_top">32dp</dimen>
+    <dimen name="question_text_size">24sp</dimen>
+    <integer name="duration">500</integer>
+</resources>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="question_0_answers">
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>1</item>
+    </integer-array>
+
+    <integer-array name="question_1_answers">
+        <item>0</item>
+        <item>1</item>
+        <item>0</item>
+    </integer-array>
+
+    <integer-array name="question_2_answers">
+        <item>1</item>
+        <item>0</item>
+        <item>1</item>
+        <item>0</item>
+    </integer-array>
+
+    <integer-array name="question_3_answers">
+        <item>1</item>
+        <item>1</item>
+        <item>0</item>
+        <item>1</item>
+    </integer-array>
+
+    <integer-array name="question_4_answers">
+        <item>0</item>
+        <item>0</item>
+        <item>1</item>
+    </integer-array>
+
+    <integer-array name="question_5_answers">
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>1</item>
+    </integer-array>
+
+    <integer-array name="question_6_answers">
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>1</item>
+    </integer-array>
+
+    <integer-array name="question_7_answers">
+        <item>0</item>
+        <item>1</item>
+        <item>0</item>
+    </integer-array>
+
+    <integer-array name="question_8_answers">
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>1</item>
+    </integer-array>
+
+    <integer-array name="question_9_answers">
+        <item>1</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
+</resources>

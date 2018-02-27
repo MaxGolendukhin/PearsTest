@@ -1,0 +1,91 @@
+<resources>
+    <string name="app_name">PearsTest</string>
+
+    <string-array name="questions">
+        <item>1. Where pears are originated from?</item>
+        <item>2. When pears were cultivated for the first time?</item>
+        <item>3. To what goddesses of Greek mythology pears sacrificed?</item>
+        <item>4. Which of the listed different names of the same variety of pears?</item>
+        <item>5. What country was "Packham" pears was developed in?</item>
+        <item>6. How many years does pear tree might live up to?</item>
+        <item>7. Which country produces the most of pears?</item>
+        <item>8. What plant is the nearest relative to pears?</item>
+        <item>9. How many there are kinds of pears?</item>
+        <item>10. who from the poets of ancient Greece called pear \"the gift of the gods\"?</item>
+    </string-array>
+
+    <string-array name="question_0_options">
+        <item>The Mediterranean;</item>
+        <item>South America;</item>
+        <item>Australia;</item>
+        <item>South Asia.</item>
+    </string-array>
+
+    <string-array name="question_1_options">
+        <item>600 BC;</item>
+        <item>1100 BC;</item>
+        <item>500 AD.</item>
+    </string-array>
+
+    <string-array name="question_2_options">
+        <item>Hera;</item>
+        <item>Athena;</item>
+        <item>Aphrodite;</item>
+        <item>Demeter.</item>
+    </string-array>
+
+    <string-array name="question_3_options">
+        <item>Bartlett;</item>
+        <item>Williams;</item>
+        <item>Bosc;</item>
+        <item>Bon Shreten.</item>
+    </string-array>
+
+    <string-array name="question_4_options">
+        <item>Great Britain;</item>
+        <item>USA;</item>
+        <item>Australia.</item>
+    </string-array>
+
+    <string-array name="question_5_options">
+        <item>15 years;</item>
+        <item>30 years;</item>
+        <item>50 years;</item>
+        <item>80 years;</item>
+        <item>100 years.</item>
+    </string-array>
+
+    <string-array name="question_6_options">
+        <item>USA;</item>
+        <item>Australia;</item>
+        <item>New Zealand;</item>
+        <item>China.</item>
+    </string-array>
+
+    <string-array name="question_7_options">
+        <item>Apple;</item>
+        <item>Rose;</item>
+        <item>Banana.</item>
+    </string-array>
+
+    <string-array name="question_8_options">
+        <item>200;</item>
+        <item>500;</item>
+        <item>1000;</item>
+        <item>3000.</item>
+    </string-array>
+
+    <string-array name="question_9_options">
+        <item>Homer;</item>
+        <item>Hermesianuct;</item>
+        <item>Hesiod;</item>
+        <item>Hipponact.</item>
+    </string-array>
+
+    <string name="previous_button_label">previous</string>
+    <string name="next_button_label">next</string>
+    <string name="finish_button_label">finish</string>
+    <string name="results_dialog">You have %1$s of %2$s correct answers.</string>
+    <string name="show_correct_answers_dialog_button">correct answers</string>
+    <string name="reset_button">reset</string>
+</resources>

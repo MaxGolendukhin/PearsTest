@@ -6,23 +6,28 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    final boolean[] isRadioGroup =
-            {true, true, false, false, true, true, true, true, true, true};//list if question is singe option or multiple
-    private final int SELECTED = 1;
+    final int[] questionType =
+            {0, 0, 1, 1, 0, 0, 0, 0, 0, 2};//list if question 0 - radioButton, 1 - checkBoxes, 2 - editText
     private final int UNSELECTED = 0;
+    private final int SELECTED = 1;
+    private final int CORRECT = 2;
     Resources resources;
     TextView questionTextView;
     Button previousButton;
@@ -35,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private String[][] options; //list of all options in all questions to display
     private LinearLayout optionsLinearLayout;
     private LinearLayout.LayoutParams linearLayoutParams;
+    private String textForEditText = "";
 
     /**
      * Creates MainActivity
@@ -67,26 +73,26 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Saves phone parameters on rotate
-     *
      * @param outState used to save question number and options already selected
      */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putInt("questionNumber", questionNumber);
         outState.putSerializable("selectedOptions", selectedOptions);
+        outState.putString("textForEditText", textForEditText);
         super.onSaveInstanceState(outState);
     }
 
     /**
      * Restores MainActivity after phone was rotated
      * Updates linear layout with question options
-     *
      * @param savedInstanceState used to restore question number and selected options
      */
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         questionNumber = savedInstanceState.getInt("questionNumber");
         selectedOptions = (int[][]) savedInstanceState.getSerializable("selectedOptions");
+        textForEditText = savedInstanceState.getString("textForEditText");
         previousButton.setVisibility(View.VISIBLE);
         nextButton.setVisibility(View.VISIBLE);
         updateOptionsLinearLayout(true);
@@ -96,15 +102,13 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Updates linear layout with options for current question, also updates buttons visibility
      * Sets animations, first swaps children views, then replace linear layout and then animate appearance of updated layout
-     *
      * @param isNext if need to animate next option
      */
     private void updateOptionsLinearLayout(boolean isNext) {
         Animation animationFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
         animationFadeOut.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) {
-            }
+            public void onAnimationStart(Animation animation) {}
 
             @Override
             public void onAnimationEnd(Animation animation) {
@@ -114,8 +118,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
+            public void onAnimationRepeat(Animation animation) {}
         });
         questionTextView.startAnimation(animationFadeOut);
 
@@ -132,17 +135,18 @@ public class MainActivity extends AppCompatActivity {
 
         animationOut.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) {
-            }
+            public void onAnimationStart(Animation animation) {}
 
             @Override
             public void onAnimationEnd(Animation animation) {
                 optionsLinearLayout.removeAllViews();
 
-                if (isRadioGroup[questionNumber]) {
+                if (questionType[questionNumber] == 0) {
                     addRadioGroup(options[questionNumber]);
-                } else {
+                } else if (questionType[questionNumber] == 1) {
                     addCheckboxes(options[questionNumber]);
+                } else {
+                    addEditTextView();
                 }
                 optionsLinearLayout.startAnimation(animationIn);
             }
@@ -157,8 +161,37 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * Adds editText widget to linear layout
+     */
+    private void addEditTextView() {
+        final EditText editText = new EditText(this);
+        editText.setText(textForEditText);
+        editText.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable editable) {
+                String editedText = editable.toString().toLowerCase();
+                if (editedText.equals("")) {
+                    selectedOptions[questionNumber][0] = UNSELECTED;
+                } else {
+                    selectedOptions[questionNumber][0] = SELECTED;
+                }
+
+                if (editedText.equals(resources.getString(R.string.lastQuestionAnswer).toLowerCase())) {
+                    selectedOptions[questionNumber][0] = CORRECT;
+                }
+                textForEditText = editedText;
+
+                updateFinishButton();
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        });
+        optionsLinearLayout.addView(editText);
+    }
+
+    /**
      * Adds radio group to linear layout if question implies single question
-     *
      * @param options for current question to display
      */
     private void addRadioGroup(String[] options) {
@@ -191,7 +224,6 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Adds check boxes to linear layout if question implies multiple question
-     *
      * @param options for current question to display
      */
     private void addCheckboxes(String[] options) {
@@ -245,7 +277,6 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Every time any option is selected need to define are all questions answered
      * Used to show finish button
-     *
      * @return true if all question answered, false otherwise
      */
     private boolean areAllOptionsSelected() {
@@ -253,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
         int questionsQuantity = selectedOptions.length;
         for (int[] options : selectedOptions) {
             for (int option : options) {
-                if (option == SELECTED) {
+                if (option == SELECTED || option == CORRECT) {
                     allOptionsSelected++;
                     break;
                 }
@@ -264,7 +295,6 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Initializes radio group to add to linear layout
-     *
      * @param options for current question
      * @return created radio group
      */
@@ -284,7 +314,6 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Creates empty list for further answers
-     *
      * @param answers list with correct answers for every question
      * @return created empty 2d list
      */
@@ -300,7 +329,6 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Create list with options to display within every question via xml resources
-     *
      * @return list with options
      */
     private String[][] getOptions() {
@@ -320,7 +348,6 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Create list with correct answers for every question via xml resources
-     *
      * @return list with answers
      */
     private int[][] getAnswers() {
@@ -342,16 +369,31 @@ public class MainActivity extends AppCompatActivity {
      * Next button pressed, increment number of question and update linear layout
      */
     public void nextQuestion(View view) {
-        questionNumber++;
+        if (questionNumber < questions.length - 1) {
+            questionNumber++;
+        }
         updateOptionsLinearLayout(true);
+        Toast.makeText(getApplicationContext(),
+                resources.getString(R.string.results_dialog,
+                        String.valueOf(calculateResult()),
+                        String.valueOf(questions.length)),
+                Toast.LENGTH_SHORT).show();
+
     }
 
     /**
      * Previous button pressed, increment number of question and update linear layout
      */
     public void previousQuestion(View view) {
-        questionNumber--;
+        if (questionNumber > 0) {
+            questionNumber--;
+        }
         updateOptionsLinearLayout(false);
+        Toast.makeText(getApplicationContext(),
+                resources.getString(R.string.results_dialog,
+                        String.valueOf(calculateResult()),
+                        String.valueOf(questions.length)),
+                Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -367,18 +409,19 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 selectedOptions = getAnswers();
+                                textForEditText = resources.getString(R.string.lastQuestionAnswer);
                                 updateOptionsLinearLayout(true);
                                 updateFinishButton();
                                 dialog.dismiss();
                             }
                         })
-                .setNeutralButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
                 })
-                .setNegativeButton(getString(R.string.reset_button), new DialogInterface.OnClickListener() {
+                .setNeutralButton(getString(R.string.reset_button), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         selectedOptions = createEmptyLisForSelectedOptions(answers);
@@ -396,7 +439,6 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Triggered if finish button pressed to display progress via alert dialog
-     *
      * @return calculated amount of correct answers
      */
     private int calculateResult() {

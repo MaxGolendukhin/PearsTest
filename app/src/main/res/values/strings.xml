@@ -11,7 +11,7 @@
         <item>7. Which country produces the most of pears?</item>
         <item>8. What plant is the nearest relative to pears?</item>
         <item>9. How many there are kinds of pears?</item>
-        <item>10. who from the poets of ancient Greece called pear \"the gift of the gods\"?</item>
+        <item>10. Who from the poets of ancient Greece called pear \"the gift of the gods\"?</item>
     </string-array>
 
     <string-array name="question_0_options">
@@ -88,4 +88,5 @@
     <string name="results_dialog">You have %1$s of %2$s correct answers.</string>
     <string name="show_correct_answers_dialog_button">correct answers</string>
     <string name="reset_button">reset</string>
+    <string name="lastQuestionAnswer">Homer</string>
 </resources>
